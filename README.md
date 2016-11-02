@@ -8,7 +8,8 @@ WordPress bbPress Profile Tabs class allows you to easily create tabs with custo
 ```php
 if ( !class_exists('bbPressProfileTabs') ) {
     require ABSPATH . '/wp-content/plugins/bbpress-profile-tabs/bbpress-profile-tabs.php';
-}```
+}
+```
 
 2. Using <code>create</code> method to register the tab:
 
@@ -20,7 +21,8 @@ bbPressProfileTabs::create(
         'menu-item-position' => 1,
         'visibility' => 'logged-in'
     ]
-);```
+);
+```
 
 3. Now we embed the tab content:
 
@@ -37,7 +39,8 @@ add_action( "BPT_content-my-custom-tab", function() {
     <p>Hello Folks! I created <?php echo $displayedUser->display_name; ?>'s custom tab with bbPress Profile Tabs from @Samuel_Elh!</p>
 
     <?php
-});```
+});
+```
 
 # Quick Docs
 
