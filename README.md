@@ -42,6 +42,8 @@ add_action( "BPT_content-my-custom-tab", function() {
 });
 ```
 
+**Important**: The rewrite rules will have to be flushed so the registered tabs will function so if you are using this on a custom plugin then flush the rewrite rules using [`register_activation_hook`](https://developer.wordpress.org/reference/functions/register_activation_hook/). `bbPressProfileTabs::flushRewriteRules()` can be helpful.
+
 # Quick Docs
 
 Coming soon..
