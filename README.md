@@ -7,7 +7,7 @@ WordPress bbPress Profile Tabs class allows you to easily create tabs with custo
 
 ```php
 if ( !class_exists('bbPressProfileTabs') ) {
-    require ABSPATH . '/wp-content/plugins/bbpress-profile-tabs/bbpress-profile-tabs.php';
+    require('bbPressProfileTabs.php');
 }
 ```
 
