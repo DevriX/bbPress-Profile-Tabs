@@ -102,8 +102,6 @@ class bbPressProfileTabs
     {
         global $BPT_rewrites;
 
-        echo var_dump($BPT_rewrites);
-
         if ( empty($BPT_rewrites) || !is_array($BPT_rewrites) ) return;
         foreach ( $BPT_rewrites as $regex => $query ) {
             add_rewrite_rule( $regex, $query, 'top' );
