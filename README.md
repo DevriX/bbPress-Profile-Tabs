@@ -14,14 +14,20 @@ if ( !class_exists('bbPressProfileTabs') ) {
 2. Using <code>create</code> method to register the tab:
 
 ```php
-bbPressProfileTabs::create(
-    [
-        'slug' => 'my-custom-tab',
-        'menu-item-text' => 'My Custom Tab',
-        'menu-item-position' => 1,
-        'visibility' => 'logged-in'
-    ]
-);
+add_action('plugins_loaded', 'register_my_custom_profile_tab');
+
+function register_my_custom_profile_tab() {
+    return \bbPressProfileTabs::create(
+        [
+            'slug' => 'my-custom-tab',
+            'menu-item-text' => 'My Custom Tab',
+            'menu-item-position' => 1,
+            'visibility' => 'logged-in'
+        ]
+    )
+    /* You must call the init method */
+    ->init();
+}
 ```
 
 3. Now we embed the tab content:
