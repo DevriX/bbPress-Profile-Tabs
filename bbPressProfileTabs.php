@@ -12,14 +12,26 @@
 
 class bbPressProfileTabs
 {
+    /**
+      * Class instance for static calls
+      */
+    protected static $instance = null;
+
+    /** Get Class instance **/
+    public static function instance()
+    {
+        return null == self::$instance ? new self : self::$instance;
+    }
+
     public function init()
     {
-        // init tabs rewrite rules
-        self::rewriteRules();
-        // admin check
-        if ( is_admin() ) return;
         // initialize the tabs
-        self::initTabs();
+        $this->initTabs();
+        // init tabs rewrite rules
+        add_action('init', array($this, 'rewriteRules'));
+        // admin check
+        if ( is_admin() )
+            return $this;
         // add CSS hack to hide bbP profile elements and show our tab instead
         add_action( "wp_head", array( $this, "cssHack" ) );
         // add menu items with JavaScript
@@ -30,6 +42,8 @@ class bbPressProfileTabs
         add_action( "wp", array( $this, "accessibilityCheck" ), 0 );
         // parse the custom tab content
         add_action( "bbp_template_before_user_profile", array( $this, "parseTabContent" ) );
+        // return an instance
+        return $this;
     }
 
     public static function create( Array $args )
@@ -45,9 +59,11 @@ class bbPressProfileTabs
         }
         // append the tab data
         $BPT_tabs[] = $args;
+
+        return self::instance();
     }
 
-    public static function initTabs()
+    public function initTabs()
     {
         global $BPT_tabs;
         // if no tabs are registered yet
@@ -78,24 +94,31 @@ class bbPressProfileTabs
                 isset($tab['query_var']) ? $tab['query_var'] : $tab['slug']
             );
         }
+
+        return $this;
     }
 
-    public static function rewriteRules()
+    public function rewriteRules()
     {
         global $BPT_rewrites;
+
+        echo var_dump($BPT_rewrites);
+
         if ( empty($BPT_rewrites) || !is_array($BPT_rewrites) ) return;
         foreach ( $BPT_rewrites as $regex => $query ) {
             add_rewrite_rule( $regex, $query, 'top' );
         }
+
+        return $this;
     }
 
-    public static function pushQueryVar( $vars )
+    public function pushQueryVar( $vars )
     {
         $vars[] = "BPT_tab";
         return $vars;
     }
 
-    public static function cssHack()
+    public function cssHack()
     {
         // not our tab, none of our concern
         if ( !get_query_var( 'BPT_tab' ) ) return;
@@ -105,7 +128,7 @@ class bbPressProfileTabs
         print('.BPT-content,.BPT-content *{display: inherit !important;}#bbp-user-body * {display:none}</style>');
     }
 
-    public static function jsHack()
+    public function jsHack()
     {
         // get displayed user ID
         $user_id = bbp_get_displayed_user_id();
@@ -268,7 +291,13 @@ class bbPressProfileTabs
         return delete_option( "rewrite_rules" );
     }
 
+    /**
+      * Check if current tab is $name
+      * You must call this on wp query ready
+      * i.e on wp, wp_loaded, not init or plugins_loaded, and early hooks
+      */
+    public function isTab($name)
+    {
+        return $name == get_query_var('BPT_tab');
+    }
 }
-
-// init class
-add_action( "init", array( new bbPressProfileTabs, "init" ) );
