@@ -219,7 +219,7 @@ class bbPressProfileTabs
                 $id = isset($tab['query_var']) ? $tab['query_var'] : $tab['slug'];
                 if ( $id === $query_var ) {
                     // trigger a hook for parsing tab content
-                    do_action( "BPT_content-{$tab['slug']}" );
+                    do_action( "BPT_content-{$id}" );
                     // there has to be one tab with this id
                     break;
                 }
